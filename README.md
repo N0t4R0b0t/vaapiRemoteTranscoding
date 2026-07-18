@@ -94,7 +94,12 @@ flowchart TB
   `relay-server`'s `--resolution`/`RELAY_RESOLUTION` (default `640x480`,
   already safe) must never be configured above `720x576`, or nothing above
   that size will ever be usable through this driver at all — not slow, not
-  degraded, simply unavailable.
+  degraded, simply unavailable. The upside: downscaling a large source down
+  to this driver's working range isn't a cost you pay for the privilege —
+  measured for real, `relay-server` transcodes *faster* at a smaller output
+  size than at the source's own resolution, since encode cost scales with
+  output pixel count (see
+  [benchmark results](docs/benchmark-results.md#relay-server-downscaling-costs-nothing-extra--its-faster)).
 - **XvMC is not actually faster than software decode on this hardware**,
   anywhere in its usable range. Real benchmarking across the full working
   resolution ladder found the XvMC hybrid path (real hardware
