@@ -76,7 +76,9 @@ flowchart TB
     C-ABI shaped regardless of language, and C avoids the panic-across-FFI
     hazard a Rust `extern "C"` entry point would otherwise need
     `catch_unwind` for. Packaged for Arch Linux 32 via `deploy/aur/PKGBUILD`.
-- **`docs/`** — benchmark results and validation notes from Phase 0.
+- **`docs/`** — [benchmark results](docs/benchmark-results.md) (real, isolated
+  decode+render timing on the actual GMA950 netbook) and validation notes
+  from Phase 0.
 
 ## Real hardware constraints — read this before deploying
 
