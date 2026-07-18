@@ -1,0 +1,54 @@
+# Maintainer: Ricardo Salvador <rmssalvador@gmail.com>
+#
+# Local-source package for the GMA950 VA-API/XvMC relay driver. Builds
+# in-place from the sibling vaapi-xvmc-driver/ directory in this repo --
+# no network fetch, since the source repo is private. Copy the whole repo
+# tree (this file lives at deploy/aur/PKGBUILD, two levels below the repo
+# root) to the target machine and run `makepkg -si` from this directory.
+#
+# If/when the repo goes public, switch this to a git+https VCS package
+# (source=("$pkgname::git+<url>")) so it's AUR-submittable as-is.
+#
+# Requires XvMC enabled in the Intel DDX + /etc/X11/XvMCConfig on the
+# target machine before this driver will find a port at runtime -- see
+# the README's Installation section, not something this package can do
+# for you.
+
+pkgname=vaapi-xvmc-driver
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="VA-API driver relaying H.264 decode to a remote transcoder and decoding the returned MPEG-2 locally via XvMC (Intel GMA 950 / 945GSE)"
+arch=('i686')
+url="https://github.com/N0t4R0b0t/vaapiRemoteTranscoding"
+license=('custom')
+depends=('libva' 'libxvmc' 'libxv' 'libx11')
+makedepends=('pkgconf')
+source=()
+
+_srctree() {
+    cd "$startdir/../.."
+    pwd
+}
+
+build() {
+    cd "$(_srctree)/vaapi-xvmc-driver"
+    make clean 2>/dev/null || true
+    make
+}
+
+check() {
+    cd "$(_srctree)/vaapi-xvmc-driver"
+    # Needs a running X server with a real (or at least present) DISPLAY;
+    # skipped automatically if none is reachable, since makepkg build
+    # environments (chroots, CI) typically have none.
+    if [ -n "${DISPLAY:-}" ]; then
+        make test
+    else
+        echo "no \$DISPLAY set, skipping smoke test (see test/smoke_test.c)"
+    fi
+}
+
+package() {
+    cd "$(_srctree)/vaapi-xvmc-driver"
+    install -Dm755 xvmc_drv_video.so "$pkgdir/usr/lib/dri/xvmc_drv_video.so"
+}

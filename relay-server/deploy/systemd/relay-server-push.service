@@ -1,0 +1,24 @@
+# Phase 3 real deployment: the driver pushes its H.264 bitstream, this
+# transcodes it live and streams MPEG-2 back on the same connection. Install
+# to /etc/systemd/system/relay-server-push.service on the R520 LXC (or Pi),
+# fill in /etc/relay-server/env, then:
+#   systemctl daemon-reload && systemctl enable --now relay-server-push
+
+[Unit]
+Description=VA-API relay server (Phase 3 push mode)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/relay-server/env
+ExecStart=/usr/local/bin/relay-server push
+Restart=on-failure
+RestartSec=2
+DynamicUser=yes
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+
+[Install]
+WantedBy=multi-user.target

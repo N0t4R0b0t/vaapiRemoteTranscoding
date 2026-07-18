@@ -1,0 +1,19 @@
+<?xml version="1.0" standalone='no'?>
+<!--
+  mDNS/Avahi autodiscovery for the relay service (Phase 1 checklist item).
+  No driver-side code needed to resolve it: any Linux with nss-mdns
+  configured (standard on Arch/Debian with avahi-daemon installed) resolves
+  "<hostname>.local" via the normal glibc NSS resolver, so the driver can
+  just be pointed at a plain hostname like "r520.local:9100".
+
+  Install to /etc/avahi/services/relay-server.service on the relay host
+  (avahi-daemon picks up changes to this directory automatically, no
+  restart needed).
+-->
+<service-group>
+  <name replace-wildcards="yes">VA-API relay on %h</name>
+  <service>
+    <type>_vaapi-relay._tcp</type>
+    <port>9100</port>
+  </service>
+</service-group>

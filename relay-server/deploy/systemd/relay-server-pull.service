@@ -1,0 +1,23 @@
+# Phase 1 test harness only: pulls a fixed source, transcodes, serves to any
+# client. Install to /etc/systemd/system/relay-server-pull.service on the
+# R520 LXC (or Pi), fill in /etc/relay-server/env, then:
+#   systemctl daemon-reload && systemctl enable --now relay-server-pull
+
+[Unit]
+Description=VA-API relay server (Phase 1 pull test mode)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/relay-server/env
+ExecStart=/usr/local/bin/relay-server pull
+Restart=on-failure
+RestartSec=2
+DynamicUser=yes
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+
+[Install]
+WantedBy=multi-user.target

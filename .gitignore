@@ -1,0 +1,38 @@
+# Build artifacts
+build/
+*.o
+*.so
+*.a
+*.out
+vaapi-xvmc-driver/test/smoke_test
+vaapi-xvmc-driver/test/render_stress_test
+vaapi-xvmc-driver/test/relay_pixel_test
+vaapi-xvmc-driver/test/relay_pixel_test_pure
+vaapi-xvmc-driver/test/reconstruct_frame
+vaapi-xvmc-driver/test/relay_display_test
+vaapi-xvmc-driver/test/local_mpeg2_decode_only_test
+vaapi-xvmc-driver/test/local_mpeg2_player
+
+# Rust (relay-server)
+/target/
+relay-server/target/
+
+# Python (relay-server tooling)
+__pycache__/
+*.pyc
+.venv/
+
+# Editor / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Claude Code local tooling (worktrees, session state)
+.claude/
+
+# Test clips / benchmark captures (large binaries, don't commit)
+docs/*.mp4
+docs/*.mpg
+docs/*.ts
